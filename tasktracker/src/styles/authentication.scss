@@ -1,0 +1,39 @@
+@import './colors.scss';
+
+.authentication{
+    margin: 0;
+    color: $secondary-color;
+    &__card{
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+    &--title{
+        text-shadow: 3px 3px 2px rgba(204, 204, 204, 1);
+        font-size: 64px;
+        font-weight: 600;
+    }
+    &--input{
+        &:focus{
+            outline: none;
+            border: 2px solid $danger;
+        }
+    }
+    &--btn{
+        width: 100%;
+        font-weight: 600;
+        background-color: $danger;
+        border: 2px solid $danger;
+        border-radius: 5px;
+        &:hover{
+            background-color: transparent;
+            transition: all ease-in-out .6s;
+            border: 2px solid $secondary-color;
+        }
+    }
+    &--img{
+        background-image: url('../../public/assets/signup.png');
+        height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        transition: ease-in-out 5s;
+    }
+}
