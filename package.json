@@ -1,21 +1,15 @@
 {
-  "name": "tasktracker",
-  "version": "0.0.1",
-  "description": "This is task tracker app",
+  "name": "task-tracker",
+  "version": "1.0.0",
+  "description": "",
   "main": "main.js",
   "scripts": {
-    "test": " ",
-    "start": "electron .",
-    "dev:watch": "npx electronmon --trace-warnings ."
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:watch": "npx electronmon --trace-warnings . && electron ."
   },
-  "keywords": [
-    "electron",
-    "reactjs",
-    "typescript"
-  ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "electron": "^27.0.2"
   }
 }
