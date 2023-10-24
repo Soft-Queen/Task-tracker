@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -16,22 +16,31 @@ export const SignIn: React.FC = () => {
         password: '',
 
       };
-      const onSubmit = (values: any) => {
+      const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
         console.log(values);
         
         const userData = localStorage.getItem('authentication');
-        console.log(userData);
+       
         if (userData) {
             const parseData = JSON.parse(userData);
             console.log(parseData);
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
+            setLoginSuccess(true);
            if (filt) {
             navigate('/home')
+           }else{
+            setLoginSuccess(false);
+        
            }
             
             
         }
-        
+        resetForm({
+            values: {
+              email: '',
+              password: ''
+            },
+          });
     
       };
     return (
