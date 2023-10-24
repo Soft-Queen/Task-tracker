@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -10,7 +10,8 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignUp: React.FC = () => {
-
+    const [loginSuccess, setLoginSuccess] = useState(false);
+    const navigate = useNavigate();
       const initialValues = {
         fullname: '',
         email: '',
@@ -19,7 +20,21 @@ export const SignUp: React.FC = () => {
       };
 
       const onSubmit = (values: any) => {
+        
+        const existingData = localStorage.getItem('authentication');
+        const existingDataArray = existingData ? JSON.parse(existingData) : [];
+        const updatedData = [...existingDataArray, values];
+        localStorage.setItem('authentication', JSON.stringify(updatedData));
         console.log('Form submitted with values:', values);
+        const isLoginSuccessful = true;
+
+    if (isLoginSuccessful) {
+      setLoginSuccess(true);
+      navigate('/auth/sign-in');
+    } else {
+      setLoginSuccess(false);
+    }
+    
       };
     return (
         <>
@@ -105,6 +120,8 @@ export const SignUp: React.FC = () => {
                                     }
                                    }
                                 </Formik>
+                                {loginSuccess && <div>Login Successful!</div>}
+                                {/* {loginSuccess === false && <div>Login Failed. Please try again.</div>} */}
                                     </div>
                             
                             </div>
