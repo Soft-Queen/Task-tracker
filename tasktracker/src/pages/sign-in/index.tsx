@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -9,16 +9,16 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignIn: React.FC = () => {
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+    const [isValidUser, setIsValidUser] = useState<string>();
     const navigate = useNavigate();
     const initialValues = {
         email: '',
         password: '',
 
       };
-      const onSubmit = (values: any) => {
+      const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
         console.log(values);
-        
         const userData = localStorage.getItem('authentication');
         console.log(userData);
         if (userData) {
@@ -26,12 +26,21 @@ export const SignIn: React.FC = () => {
             console.log(parseData);
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
            if (filt) {
-            navigate('/home')
+            setLoginSuccess(true);
+            navigate('/tasks')
+           }else{
+            setLoginSuccess(false);
+            setIsValidUser("incorrect credentials supplied.")
            }
             
             
         }
-        
+        resetForm({
+            values:{
+                email: '',
+                password: ''
+            }
+        })
     
       };
     return (
@@ -44,13 +53,14 @@ export const SignIn: React.FC = () => {
                             <div className="card rounded-0 h-100 border-0 authentication__card">
                                     <div className="row m-2 pt-5 mt-5 py-5 my-5">
                                         <h3 className="text-center mb-3 authentication--title">Sign In </h3>
+                                        <p className="mb-3 text-center authentication--text">Klakpad task tracker management app, seamily made easy for your productivity.</p>
                                         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                                    {
                                     (props) => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
-                                            <Form>
-                                               
+                                            <Form className="my-5">
+                                               <p className="text-danger">{isValidUser}</p>
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
                                                  <Field 
