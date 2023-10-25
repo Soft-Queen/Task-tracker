@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../modal/CreateTask/CreateTaskModal';
 import { Task } from './task';
+import { Link } from 'react-router-dom';
 
 interface TaskParams {
   title: string;
@@ -72,7 +73,7 @@ export const TaskList = () => {
             </div>
           </div>
           <div className='' style={{position: 'fixed', bottom: '20px', right: '20px' }}>
-          <small className='float-end text-danger'>sign out</small>
+          <Link to="/auth/sign-in" className='float-end text-danger'>sign out</Link>
           </div>           
     </div>
   );
