@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../modal/CreateTask/CreateTaskModal';
 import { Task } from './task';
+import EditModal from '../modal/EditTask/EditTaskModal';
 
 interface TaskParams {
   title: string;
@@ -12,7 +13,9 @@ interface TaskParams {
 export const TaskList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] =  useState<TaskParams[]>([]);
-  
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTaskIndex, setSelectedTaskIndex] = useState<number | null>(null);
+
   const openModal = () => {
     setIsModalOpen(true);
   }
@@ -30,6 +33,11 @@ export const TaskList = () => {
     console.log('newTask',newTask);
     console.log('all array', tasks);
   };
+  
+  const openEditModal = (taskId: number) => {
+    setSelectedTaskIndex(taskId);
+    setEditModalOpen(true);
+  }
 
   // handle task deletion
   const handleRemoveTask = (taskId: number) => {
@@ -40,6 +48,20 @@ export const TaskList = () => {
 
   const handleEditTask = (taskId: number) =>{
     console.log(tasks[taskId]);
+    openEditModal(taskId);
+  }
+
+  const handleEditSave = (title: string, description: string, selectedPriority: string, endDate: string) => {
+    if (selectedTaskIndex !== null){
+      const editedTask: TaskParams = {
+        title:title, description:description, priority: selectedPriority, dueDate:endDate
+      };
+      const updatedTasks = [...tasks];
+      updatedTasks[selectedTaskIndex] = editedTask;
+      setTasks(updatedTasks);
+      setSelectedTaskIndex(null);
+      setEditModalOpen(false);
+    }
   }
 
   return (
@@ -56,12 +78,14 @@ export const TaskList = () => {
         <div className='col-6 gx-5'>
           <button className='btn btn-sm btn-info float-end mb-3' onClick={openModal}>Add task</button>
           <Modal isOpen={isModalOpen} onSave={handleSave} onClose={closeModal} selectedPriority='value'/>
+        
           <div className='form'>
             <input type="text" id="inputPassword5" placeholder='Search task' className="form-control rounded-pill" aria-describedby="passwordHelpBlock"/>
             {/* <span>
               <i className='fa fa-search float-end'></i>
             </span> */}
           </div>
+          <EditModal isOpen = {editModalOpen} onSave={handleEditSave} onClose={()=>setEditModalOpen(false)}/>
         </div>
       </div>
           <div className='row'>
