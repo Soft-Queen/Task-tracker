@@ -88,10 +88,13 @@ export const TaskList = () => {
           <EditModal isOpen = {editModalOpen} onSave={handleEditSave} onClose={()=>setEditModalOpen(false)}/>
         </div>
       </div>
-          <div className='row'>
-            <div className='col-6'>
-              {tasks.map((task, index) =>(<Task key={index} data={task} onRemove={() =>handleRemoveTask(index)} onEdit={()=>handleEditTask(index)}/>))}
-            </div>
+          <div className='row d-flex flex-wrap'>
+              {tasks.map((task, index) =>(
+                <div className='col-6' key={index}>
+                  <Task data={task} onRemove={() =>handleRemoveTask(index)} onEdit={()=>handleEditTask(index)}/>
+                </div>
+                ))}
+            
             <div className='col-6'>             
             </div>
           </div>
