@@ -9,7 +9,8 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignIn: React.FC = () => {
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+    const [isUserValidated, setIsUserValidated] = useState<string>()
     const navigate = useNavigate();
     const initialValues = {
         email: '',
@@ -27,10 +28,10 @@ export const SignIn: React.FC = () => {
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
             setLoginSuccess(true);
            if (filt) {
-            navigate('/home')
+            navigate('/tasks')
            }else{
             setLoginSuccess(false);
-        
+            setIsUserValidated("Incorrect credentials, supplied");
            }
             
             
@@ -59,7 +60,7 @@ export const SignIn: React.FC = () => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
                                             <Form>
-                                               
+                                               {isUserValidated}
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
                                                  <Field 
