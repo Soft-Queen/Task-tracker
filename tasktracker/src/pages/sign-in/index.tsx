@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -9,29 +9,39 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignIn: React.FC = () => {
-    const [loginSuccess, setLoginSuccess] = useState(false);
+    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+    const [isUserValidated, setIsUserValidated] = useState<string>()
     const navigate = useNavigate();
     const initialValues = {
         email: '',
         password: '',
 
       };
-      const onSubmit = (values: any) => {
+      const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
         console.log(values);
         
         const userData = localStorage.getItem('authentication');
-        console.log(userData);
+       
         if (userData) {
             const parseData = JSON.parse(userData);
             console.log(parseData);
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
+            setLoginSuccess(true);
            if (filt) {
-            navigate('/home')
+            navigate('/tasks')
+           }else{
+            setLoginSuccess(false);
+            setIsUserValidated("Incorrect credentials, supplied");
            }
             
             
         }
-        
+        resetForm({
+            values: {
+              email: '',
+              password: ''
+            },
+          });
     
       };
     return (
@@ -50,7 +60,7 @@ export const SignIn: React.FC = () => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
                                             <Form>
-                                               
+                                               {isUserValidated}
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
                                                  <Field 
