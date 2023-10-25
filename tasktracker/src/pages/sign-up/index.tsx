@@ -34,13 +34,7 @@ export const SignUp: React.FC = () => {
     } else {
       setLoginSuccess(false);
     }
-    resetForm({
-        values: {
-            fullname: '',
-            email: '',
-            password: ''
-        }
-    })
+    
       };
     return (
         <>

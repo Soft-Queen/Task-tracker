@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from '../modal/CreateTaskModal';
+import Modal from '../modal/CreateTask/CreateTaskModal';
 import { Task } from './task';
 
 interface TaskParams {
@@ -21,6 +21,7 @@ export const TaskList = () => {
     setIsModalOpen(false);
   }
 
+  // handle task save
   const handleSave = (title: string, description: string, selectedPriority: string, endDate: string) => {
     const newTask: TaskParams = {
       title: title, description: description, priority: selectedPriority, dueDate: endDate
@@ -29,6 +30,17 @@ export const TaskList = () => {
     console.log('newTask',newTask);
     console.log('all array', tasks);
   };
+
+  // handle task deletion
+  const handleRemoveTask = (taskId: number) => {
+    const updateTasks = tasks.filter((task, index) => index !== taskId);
+    // console.log(tasks[taskId]);
+    setTasks(updateTasks);
+  }
+
+  const handleEditTask = (taskId: number) =>{
+    console.log(tasks[taskId]);
+  }
 
   return (
     <div className='container mt-5'>
@@ -54,7 +66,7 @@ export const TaskList = () => {
       </div>
           <div className='row'>
             <div className='col-6'>
-              {tasks.map((task, index) =>(<Task key={index} data={task}/>))}
+              {tasks.map((task, index) =>(<Task key={index} data={task} onRemove={() =>handleRemoveTask(index)} onEdit={()=>handleEditTask(index)}/>))}
             </div>
             <div className='col-6'>             
             </div>

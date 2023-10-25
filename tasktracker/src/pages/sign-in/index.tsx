@@ -9,8 +9,7 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignIn: React.FC = () => {
-    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
-    const [isValidUser, setIsValidUser] = useState<string>();
+    const [loginSuccess, setLoginSuccess] = useState(false);
     const navigate = useNavigate();
     const initialValues = {
         email: '',
@@ -20,27 +19,19 @@ export const SignIn: React.FC = () => {
       const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
         console.log(values);
         const userData = localStorage.getItem('authentication');
-        console.log(userData);
+       
         if (userData) {
             const parseData = JSON.parse(userData);
             console.log(parseData);
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
-           if (filt) {
             setLoginSuccess(true);
-            navigate('/tasks')
-           }else{
-            setLoginSuccess(false);
-            setIsValidUser("incorrect credentials supplied.")
+           if (filt) {
+            navigate('/home')
            }
             
             
         }
-        resetForm({
-            values:{
-                email: '',
-                password: ''
-            }
-        })
+        
     
       };
     return (
@@ -59,8 +50,8 @@ export const SignIn: React.FC = () => {
                                     (props) => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
-                                            <Form className="my-5">
-                                               <p className="text-danger">{isValidUser}</p>
+                                            <Form>
+                                               
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
                                                  <Field 
