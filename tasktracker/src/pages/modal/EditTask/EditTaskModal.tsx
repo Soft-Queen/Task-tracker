@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import "./CreateTaskModal.css"
+import "./EditTaskModal.css"
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (title: string, description: string, selectedPriority: string, endDate: string) => void;
-  selectedPriority: string;
+  selectedPriority?: string;
 }
-const Modal: React.FC<ModalProps> = ({ isOpen, onSave, onClose }) => {
+const EditModal: React.FC<ModalProps> = ({ isOpen, onSave, onClose }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedPriority, setSelectedPriority] = useState('');
@@ -51,4 +51,4 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onSave, onClose }) => {
 
 
 
-export default Modal;
+export default EditModal;
