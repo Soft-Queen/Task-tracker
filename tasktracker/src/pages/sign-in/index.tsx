@@ -9,8 +9,7 @@ const validationSchema = Yup.object().shape({
   });
 
 export const SignIn: React.FC = () => {
-    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
-    const [isUserValidated, setIsUserValidated] = useState<string>()
+    const [loginSuccess, setLoginSuccess] = useState(false);
     const navigate = useNavigate();
     const initialValues = {
         email: '',
@@ -19,7 +18,6 @@ export const SignIn: React.FC = () => {
       };
       const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
         console.log(values);
-        
         const userData = localStorage.getItem('authentication');
        
         if (userData) {
@@ -28,20 +26,12 @@ export const SignIn: React.FC = () => {
             const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
             setLoginSuccess(true);
            if (filt) {
-            navigate('/tasks')
-           }else{
-            setLoginSuccess(false);
-            setIsUserValidated("Incorrect credentials, supplied");
+            navigate('/home')
            }
             
             
         }
-        resetForm({
-            values: {
-              email: '',
-              password: ''
-            },
-          });
+        
     
       };
     return (
@@ -54,13 +44,14 @@ export const SignIn: React.FC = () => {
                             <div className="card rounded-0 h-100 border-0 authentication__card">
                                     <div className="row m-2 pt-5 mt-5 py-5 my-5">
                                         <h3 className="text-center mb-3 authentication--title">Sign In </h3>
+                                        <p className="mb-3 text-center authentication--text">Klakpad task tracker management app, seamily made easy for your productivity.</p>
                                         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                                    {
                                     (props) => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
                                             <Form>
-                                               {isUserValidated}
+                                               
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
                                                  <Field 
