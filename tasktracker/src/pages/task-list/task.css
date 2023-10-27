@@ -1,0 +1,7 @@
+
+.fa.fa-edit:hover,
+.fa.fa-trash:hover {
+  background-color: #DCEEFC;
+
+  /* padding: 5px; */
+}

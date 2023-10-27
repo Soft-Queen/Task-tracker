@@ -13,25 +13,37 @@ interface TaskParams {
 
 export const TaskList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] =  useState<TaskParams[]>([]);
+  const [tasks, setTasks] =  useState<TaskParams[]>(() => {
+    const storedTasks = localStorage.getItem('allTasks');
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedTaskIndex, setSelectedTaskIndex] = useState<number | null>(null);
   const [selectedBtn, setSelectedBtn] = useState('All');
-  const [filteredTasks, setFilteredTasks] = useState<TaskParams[]>([]);
   
   const [completedTasks, setCompletedTasks] = useState<TaskParams[]>([]);
   const [inProgressTasks, setInProgressTasks] = useState<TaskParams[]>([]);
 
+  // handle changes in categories
   useEffect(() => {
     const inProgress = tasks.filter((task) => task.status === 'in progress');
     const completed = tasks.filter((task) => task.status === 'Completed');
     setInProgressTasks(inProgress);
     setCompletedTasks(completed);
-
-    // const normalizedSelectedBtn = selectedBtn.toLowerCase();
-    // const updatedFilteredTasks = normalizedSelectedBtn === 'all' ? tasks : tasks.filter(task => task.status.toLowerCase() === normalizedSelectedBtn);
-    // setFilteredTasks(updatedFilteredTasks)
   }, [selectedBtn, tasks]);
+
+  // update localstorage
+  useEffect(()=>{
+    const storedTasks = localStorage.getItem('allTasks');
+    console.log('incoming tasks', storedTasks);
+    if (storedTasks){
+      setTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+
+  useEffect(()=> {
+    localStorage.setItem('allTasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -82,22 +94,19 @@ export const TaskList = () => {
 
   const handleButtonClick = (buttonText: string) => {
     setSelectedBtn(buttonText);
-    console.log('filteredTask', filteredTasks);
   }
 
   const getBtnClass = (buttonText: string) => {
     return selectedBtn === buttonText ?
-    'btn btn-sm btn-info' : 'btn btn-sm btn-light';
+    'btn btn-sm btn-info text-white' : 'btn btn-sm btn-light';
   }
 
   const EditTaskStatus = (taskId: number) =>{
     const updatedTasks = [...tasks];
       updatedTasks[taskId].status = 'Completed';
       setTasks(updatedTasks);
-
-      // const updatedStatus = updatedTasks[taskId].status;
-      // setCompletedStatus(taskId, updatedStatus);
   }
+
 
   return (
     <div className='container mt-5'>
@@ -111,7 +120,7 @@ export const TaskList = () => {
           </div>
         </div>
         <div className='col-6 gx-5'>
-          <button className='btn btn-sm btn-info float-end mb-3' onClick={openModal}>Add task</button>
+          <button className='btn btn-sm btn-info float-end text-white mb-3' onClick={openModal}>Add task</button>
           <Modal isOpen={isModalOpen} onSave={handleSave} onClose={closeModal} selectedPriority='value'/>
         
           <div className='form'>

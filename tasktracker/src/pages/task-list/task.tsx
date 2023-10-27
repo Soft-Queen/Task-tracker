@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import './task.css'
 
 interface TaskProps{
     data:{
@@ -13,7 +14,6 @@ interface TaskProps{
     onStatusEdit: ()=> void;
     completedStatus: boolean;
 }
-
 
 export const Task: React.FC<TaskProps> = ({data, onRemove, onEdit, onStatusEdit, completedStatus }) => {
     const [completed, setCompleted] = useState(completedStatus);
@@ -48,16 +48,13 @@ export const Task: React.FC<TaskProps> = ({data, onRemove, onEdit, onStatusEdit,
             </div>
             <div className='col-4 d-flex justify-content-between'>
                 <div className=''>
-                    <i className='fa fa-edit p-2' onClick={handleEditClick}></i>
+                    <i className='fa fa-edit p-2 rounded-circle' onClick={handleEditClick}></i>
                 </div>
                 <div>
-                    <i className='fa fa-trash p-2' onClick={handleRemoveClick}></i>
+                    <i className='fa fa-trash p-2 rounded-circle' onClick={handleRemoveClick}></i>
                 </div>
                 <div>
-                    {data.status === 'Completed' ? '' :
-                    (
-                        <i className='fa fa-bell p-2 rounded-circle float-end fa-sm' style={{backgroundColor: '#FCF4C4', color:'#FCBB04'}}></i>
-                    )}    
+                    {data.status === 'Completed' ? '' : (<i className='fa fa-bell p-2 rounded-circle float-end fa-sm' style={{backgroundColor: '#FCF4C4', color:'#FCBB04'}}></i>)}
                 </div>
             </div>
         </div>
