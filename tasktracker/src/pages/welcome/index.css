@@ -1,0 +1,26 @@
+.welcome-page {
+    background: url("../../images/teacher.jpg") center center no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
+  }
+
+  /* WelcomePage.css */
+.add-task-button {
+    background-color: #007BFF; /* Blue background color */
+    color: #fff; /* White text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove button border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 18px; /* Font size */
+    cursor: pointer; /* Show a pointer cursor on hover */
+  }
+  
+  .add-task-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  

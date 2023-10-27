@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from '../modal/CreateTask/CreateTaskModal';
 import { Task } from './task';
 import EditModal from '../modal/EditTask/EditTaskModal';
+import WelcomePage from '../welcome/index';
 
 interface TaskParams {
   title: string;
@@ -35,7 +36,6 @@ export const TaskList = () => {
   // update localstorage
   useEffect(()=>{
     const storedTasks = localStorage.getItem('allTasks');
-    console.log('incoming tasks', storedTasks);
     if (storedTasks){
       setTasks(JSON.parse(storedTasks));
     }
@@ -59,7 +59,6 @@ export const TaskList = () => {
       title: title, description: description, priority: selectedPriority, dueDate: endDate, status: 'in progress',
     };
     setTasks([...tasks, newTask]);
-    console.log('newTask',newTask);
   };
   
   const openEditModal = (taskId: number) => {
@@ -70,7 +69,6 @@ export const TaskList = () => {
   // handle task deletion
   const handleRemoveTask = (taskId: number) => {
     const updateTasks = tasks.filter((task, index) => index !== taskId);
-    // console.log(tasks[taskId]);
     setTasks(updateTasks);
   }
 
@@ -88,7 +86,6 @@ export const TaskList = () => {
       setTasks(updatedTasks);
       setSelectedTaskIndex(null);
       setEditModalOpen(false);
-      console.log(editedTask);
     }
   }
 
@@ -107,10 +104,15 @@ export const TaskList = () => {
       setTasks(updatedTasks);
   }
 
-
   return (
     <div className='container mt-5'>
-      <div className='row'>
+      {tasks.length === 0 ? (<div>
+        <Modal isOpen={isModalOpen} onSave={handleSave} onClose={closeModal} selectedPriority='value'/>
+        <WelcomePage createTask={openModal} />
+      </div>)
+       : (
+        <div>
+          <div className='row'>
         <div className='col-6 gx-5'>
           <h2>Task List</h2>
           <div className='d-flex mb-2 justify-content-between'>
@@ -132,7 +134,7 @@ export const TaskList = () => {
           <EditModal isOpen = {editModalOpen} onSave={handleEditSave} onClose={()=>setEditModalOpen(false)}/>
         </div>
       </div>
-          <div className='row d-flex flex-wrap'>
+      <div className='row d-flex flex-wrap'>
               {selectedBtn === 'All' && tasks.map((task, index)=>(<div className='col-6 col-md-6 col-sm-12' key={index}>
                   <Task data={task} onRemove={() =>handleRemoveTask(index)} onEdit={()=>handleEditTask(index)} onStatusEdit={()=> EditTaskStatus(index)} completedStatus={task.status === 'Completed'}/>
                 </div>))} 
@@ -143,8 +145,11 @@ export const TaskList = () => {
                   <Task data={task} onRemove={() =>handleRemoveTask(index)} onEdit={()=>handleEditTask(index)} onStatusEdit={()=> EditTaskStatus(index)} completedStatus={task.status === 'Completed'}/>
                 </div>))}      
           </div>
+        </div>
+      )}
+      
           <div className='' style={{position: 'fixed', bottom: '20px', right: '20px' }}>
-          <small className='float-end text-danger'>sign out</small>
+            <small className='float-end text-danger'>sign out</small>
           </div>           
     </div>
   );
