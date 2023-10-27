@@ -9,6 +9,7 @@ function createMainWindow (){
         title: "Task Tracker",
         width: 1000,
         height: 1000,
+        minimizable: false,
         webPreferences: {
             contextIsolation: true,
             nodeIntegration: true,

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
+import { LogOut } from "../log-out";
+
+
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -12,26 +15,34 @@ export const SignIn: React.FC = () => {
     const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
     const [isValidatedUser, setIsValidatedUser] = useState<string>()
     const navigate = useNavigate();
+    
     const initialValues = {
         email: '',
         password: '',
 
       };
       const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
-        console.log(values);
-        const userData = localStorage.getItem('authentication');
+       
+        const userData: any = localStorage.getItem('authentication') || [];
+
+       console.log(userData);
        
         if (userData) {
             const parseData = JSON.parse(userData);
-            console.log(parseData);
-            const filt = parseData.find((val:any) => val.email === values.email && val.password === values.password);
-            setLoginSuccess(true);
-           if (filt) {
-            navigate('/tasks')
-           }else{
-            setLoginSuccess(false);
-            setIsValidatedUser("Invalid credentials supplied")
-           }
+ 
+            const userIndex = parseData.findIndex((user: any) => user.email === values.email && user.password === values.password);
+            if (userIndex !== -1) {
+                parseData[userIndex].status = true;
+                localStorage.setItem('authentication', JSON.stringify(parseData));
+                localStorage.setItem('currentUser', JSON.stringify(parseData[userIndex]));
+                setLoginSuccess(true);
+                navigate('/tasks')
+            }else{
+                setLoginSuccess(false);
+                setIsValidatedUser("Invalid credentials supplied")
+               }
+                 
+        
             
             
         }
@@ -45,11 +56,11 @@ export const SignIn: React.FC = () => {
       };
     return (
         <>
-            <div className="authentication animate__animated animate__fadeInUp animate__delay-.2s">
+            <div className="authentication animate__animated animate__fadeInUp animate__delay-.1s">
                 <div className="container-fluid h-100 p-0">
                     <div className="row g-0">
-                        <div className="col-md-7 authentication--img" />
-                        <div className="col-md-5">
+                        <div className="ccol-xxsm-3 col-sm-4 col-md-6 col-lg-7 authentication--img" />
+                        <div className="col-xxsm-9 col-sm-8 col-md-6 col-lg-5">
                             <div className="card rounded-0 h-100 border-0 authentication__card">
                                     <div className="row m-2 pt-5 mt-5 py-5 my-5">
                                         <h3 className="text-center mb-3 authentication--title">Sign In </h3>
@@ -59,7 +70,7 @@ export const SignIn: React.FC = () => {
                                     (props) => {
                                         const {errors,touched,isSubmitting} = props;
                                         return(
-                                            <Form>
+                                            <Form className="my-5">
                                                <p className="text-danger">{isValidatedUser}</p>
                                                  <div className="col-12 mb-3">
                                                     <label htmlFor="email" className="mb-1">Email</label>
@@ -98,7 +109,7 @@ export const SignIn: React.FC = () => {
                                                     )}
                                                 </ErrorMessage>
                                                  </div>
-                                                 <p className="text-end mb-3">Have an account already? <b><Link to="/">Sign In</Link></b></p>
+                                                 <p className="text-end mb-3">Have an account already? <b><Link to="/">Sign Up</Link></b></p>
                                                 <button type="submit" className="authentication--btn p-3 "  disabled={isSubmitting }>
                                                     Submit
                                                 </button>
