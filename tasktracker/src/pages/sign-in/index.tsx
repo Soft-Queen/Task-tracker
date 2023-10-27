@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { LogOut } from "../log-out";
+import { useAuth } from "../../context/authProvider";
 
 
 
@@ -21,11 +21,12 @@ export const SignIn: React.FC = () => {
         password: '',
 
       };
+      const { login }: any = useAuth;
       const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
        
         const userData: any = localStorage.getItem('authentication') || [];
 
-       console.log(userData);
+        
        
         if (userData) {
             const parseData = JSON.parse(userData);
@@ -36,7 +37,8 @@ export const SignIn: React.FC = () => {
                 localStorage.setItem('authentication', JSON.stringify(parseData));
                 localStorage.setItem('currentUser', JSON.stringify(parseData[userIndex]));
                 setLoginSuccess(true);
-                navigate('/tasks')
+                navigate('/tasks');
+                login();
             }else{
                 setLoginSuccess(false);
                 setIsValidatedUser("Invalid credentials supplied")
