@@ -73,7 +73,7 @@ export const TaskList = () => {
             </div>
           </div>
           <div className='' style={{position: 'fixed', bottom: '20px', right: '20px' }}>
-          <Link to="/auth/sign-in" className='float-end text-danger'>sign out</Link>
+          <small className='float-end text-danger'>sign out</small>
           </div>           
     </div>
   );
