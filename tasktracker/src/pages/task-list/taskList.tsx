@@ -3,6 +3,7 @@ import Modal from '../modal/CreateTask/CreateTaskModal';
 import { Task } from './task';
 import EditModal from '../modal/EditTask/EditTaskModal';
 import WelcomePage from '../welcome/index';
+import { useNavigate } from 'react-router-dom';
 
 interface TaskParams {
   title: string;
@@ -24,6 +25,7 @@ export const TaskList = () => {
   
   const [completedTasks, setCompletedTasks] = useState<TaskParams[]>([]);
   const [inProgressTasks, setInProgressTasks] = useState<TaskParams[]>([]);
+  const navigate = useNavigate();
 
   // handle changes in categories
   useEffect(() => {
@@ -104,6 +106,11 @@ export const TaskList = () => {
       setTasks(updatedTasks);
   }
 
+  const handleLogOut = () => {
+    localStorage.removeItem('currentUser');
+    navigate('/auth/sign-in')
+}
+
   return (
     <div className='container mt-5'>
       {tasks.length === 0 ? (<div>
@@ -149,7 +156,7 @@ export const TaskList = () => {
       )}
       
           <div className='' style={{position: 'fixed', bottom: '20px', right: '20px' }}>
-            <small className='float-end text-danger'>sign out</small>
+            <small className='float-end text-danger' onClick={handleLogOut} style={{cursor: 'pointer'}}>sign out</small>
           </div>           
     </div>
   );
