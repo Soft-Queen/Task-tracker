@@ -9,6 +9,9 @@ import { Layout } from './components/layouts';
 
 import { SignIn } from './pages/sign-in';
 import {TaskList} from './pages/task-list/taskList';
+import App from './App';
+import { AuthProvider } from './context/authProvider';
+import { LogOut } from './pages/log-out';
 
 
 const root = ReactDOM.createRoot(
@@ -19,10 +22,11 @@ root.render(
     {/* <App /> */}
     <HashRouter>
     <Routes>
-      <Route path='/' element={<Layout />}/>
+      <Route path='/' element={<App />}/>
 
-      <Route path='/auth/sign-in' element={<SignIn />}/>
+      <Route path='/auth/sign-in' element={<AuthProvider><SignIn /></AuthProvider>}/>
       <Route path='/tasks' element={<TaskList />}/>
+      <Route path='/logout' element={<LogOut />}/>
       
     </Routes>
     </HashRouter>

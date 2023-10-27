@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
+import { useAuth } from "../../context/authProvider";
 
 const validationSchema = Yup.object().shape({
     fullname: Yup.string().required("Fullname is required").min(3),
@@ -18,12 +19,17 @@ export const SignUp: React.FC = () => {
         password: '',
 
       };
+      const a = useAuth();
+      console.log(a);
+      
 
       const onSubmit = (values: any, { resetForm }: FormikHelpers<any>) => {
+        const userData = {...values, status:false};
+        console.log(userData);
         
         const existingData = localStorage.getItem('authentication');
         const existingDataArray = existingData ? JSON.parse(existingData) : [];
-        const updatedData = [...existingDataArray, values];
+        const updatedData = [...existingDataArray, userData];
         localStorage.setItem('authentication', JSON.stringify(updatedData));
         console.log('Form submitted with values:', values);
         const isLoginSuccessful = true;
@@ -34,18 +40,23 @@ export const SignUp: React.FC = () => {
     } else {
       setLoginSuccess(false);
     }
+    resetForm({
+        values: {
+            fullname: '',
+            email: '',
+            password: ''
+        }
+    })
     
       };
     return (
         <>
-            <div className="authentication animate__animated animate__fadeInUp animate__delay-.2s" >
+            <div className="authentication animate__animated animate__fadeInUp animate__delay-.1s">
                 <div className="container-fluid h-100 p-0">
                     <div className="row g-0">
-                        <div className="col-md-7 col-sm-6 authentication--img" />
-                        <div className="col-md-5">
+                        <div className=" col-xxsm-3 col-sm-4 col-md-6 col-lg-7 authentication--img" />
+                        <div className="col-xxsm-9 col-sm-8 col-md-6 col-lg-5">
                             <div className="card border-0 rounded-0 h-100 authentication__card">
-
-                            
                               
                                     <div className="row m-2 mt-5 py-5 my-5">
                                         <h3 className="text-center mb-3 authentication--title">Sign Up </h3>
